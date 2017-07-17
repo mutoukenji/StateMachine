@@ -10,8 +10,8 @@ ext {
 
     libraryDescription = 'A simple state machine for java'
 
-    siteUrl = 'https://github.com/mutoukenji/LibStateMachine'
-    gitUrl = 'https://github.com/mutoukenji/LibStateMachine.git'
+    siteUrl = 'https://github.com/mutoukenji/StateMachine'
+    gitUrl = 'https://github.com/mutoukenji/StateMachine.git'
 
     libraryVersion = '0.0.1'
 
@@ -20,7 +20,7 @@ ext {
     developerEmail = 'mutoukenji@gmail.com'
 
     licenseName = 'MIT'
-    licenseUrl = 'https://raw.githubusercontent.com/mutoukenji/LibStateMachine/master/LICENSE'
+    licenseUrl = 'https://raw.githubusercontent.com/mutoukenji/StateMachine/master/LICENSE'
     allLicenses = ["MIT"]
 }
 
