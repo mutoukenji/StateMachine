@@ -65,26 +65,26 @@ public class StateMachineTest {
         State<Integer, Integer> idle = new State<Integer, Integer>(STATE.IDEL.val)
                 .onEntry(new State.Handler() {
                     @Override
-                    public void handle(List<?> data) {
+                    public void handle(Object... data) {
                         output+="IDEL;";
                     }
                 })
                 .onEvent(EVENT.SELECT.val, STATE.WAIT_TO_CONFIRM.val, new State.Handler() {
                     @Override
-                    public void handle(List<?> data) {
-                        output+=String.valueOf(data.get(0))+";";
+                    public void handle(Object... data) {
+                        output+=String.valueOf(data[0])+";";
                     }
                 });
         State<Integer, Integer> selected = new State<Integer, Integer>(STATE.WAIT_TO_CONFIRM.val)
                 .onEntry(new State.Handler() {
                     @Override
-                    public void handle(List<?> data) {
+                    public void handle(Object... data) {
                         output+="TO_CONFIRM;CONFIRM_SEND;";
                     }
                 })
                 .onEvent(EVENT.CANCEL.val, STATE.TO_RESET.val, new State.Handler() {
                     @Override
-                    public void handle(List<?> data) {
+                    public void handle(Object... data) {
                         output+="CANCELED;";
                     }
                 })
@@ -92,11 +92,17 @@ public class StateMachineTest {
         State<Integer, Integer> toRest = new State<Integer, Integer>(STATE.TO_RESET.val)
                 .onEntry(new State.Handler() {
                     @Override
-                    public void handle(List<?> data) {
+                    public void handle(Object... data) {
                         output+="TO_RESET;";
                     }
                 })
-                .onEvent(EVENT.RESETED.val,STATE.IDEL.val);
+                .onEvent(EVENT.RESETED.val,STATE.IDEL.val)
+                .onExit(new State.Handler() {
+                    @Override
+                    public void handle(Object... data) {
+                        output+="TO_RESET_EXIT;";
+                    }
+                });
 
         tradeStateMachine.setStates(idle, selected, toRest);
     }
@@ -106,12 +112,12 @@ public class StateMachineTest {
         output = "";
         tradeStateMachine.start();
         Event<Integer> selectEvent = new Event<>(EVENT.SELECT.val);
-        selectEvent.data = Arrays.asList(new Integer[]{1});
+        selectEvent.setData(1);
         tradeStateMachine.event(selectEvent);
         tradeStateMachine.event(new Event<>(EVENT.CANCEL.val));
         tradeStateMachine.event(new Event<>(EVENT.CANCEL.val));
         tradeStateMachine.event(new Event<>(EVENT.RESETED.val));
-        assertEquals("IDEL;1;TO_CONFIRM;CONFIRM_SEND;CANCELED;TO_RESET;IDEL;", output);
+        assertEquals("IDEL;1;TO_CONFIRM;CONFIRM_SEND;CANCELED;TO_RESET;TO_RESET_EXIT;IDEL;", output);
     }
 
 }

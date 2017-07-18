@@ -1,19 +1,21 @@
 package tech.yaog.utils.statemachine;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 事件
  * Created by ygl_h on 2017/7/17.
  */
 public class Event<E> {
     protected E id;
-    protected List<?> data;
+    protected Object[] data;
 
     public Event(E id) {
         this.id = id;
-        this.data = new ArrayList<>();
+        this.data = new Object[0];
+    }
+
+    public Event(E id, Object... data) {
+        this.id = id;
+        this.data = data;
     }
 
     public E getId() {
@@ -24,11 +26,11 @@ public class Event<E> {
         this.id = id;
     }
 
-    public List<?> getData() {
+    public Object[] getData() {
         return data;
     }
 
-    public void setData(List<?> data) {
+    public void setData(Object... data) {
         this.data = data;
     }
 }

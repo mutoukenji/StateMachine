@@ -88,7 +88,7 @@ public class State<T,E> {
     public State<T,E> onEvent(final E eventId, final T nextState, final Handler handler) {
         handlerMap.put(eventId, new Handler() {
             @Override
-            public void handle(List<?> data) {
+            public void handle(Object... data) {
                 if (handler != null) {
                     handler.handle(data);
                 }
@@ -149,6 +149,6 @@ public class State<T,E> {
          * 处理方法实现
          * @param data 事件参数
          */
-        void handle(List<?> data);
+        void handle(Object... data);
     }
 }
