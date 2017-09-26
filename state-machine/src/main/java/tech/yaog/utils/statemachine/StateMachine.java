@@ -52,9 +52,10 @@ public class StateMachine<T,E> implements State.Notify<T> {
     /**
      * 输入事件
      * @param event 事件
+     * @return 是否处理了此事件
      */
-    public void event(Event<E> event) {
-        currentState.handle(event);
+    public boolean event(Event<E> event) {
+        return currentState.handle(event);
     }
 
     @Override

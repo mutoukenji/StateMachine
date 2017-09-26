@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/StateMachine.iml" filepath="$PROJECT_DIR$/StateMachine.iml" />
-      <module fileurl="file://$PROJECT_DIR$/StateMachine.iml" filepath="$PROJECT_DIR$/StateMachine.iml" />
-      <module fileurl="file://$PROJECT_DIR$/state-machine/state-machine.iml" filepath="$PROJECT_DIR$/state-machine/state-machine.iml" />
       <module fileurl="file://$PROJECT_DIR$/state-machine/state-machine.iml" filepath="$PROJECT_DIR$/state-machine/state-machine.iml" />
     </modules>
   </component>

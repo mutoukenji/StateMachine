@@ -130,11 +130,13 @@ public class State<T,E> {
         }
     }
 
-    void handle(Event<E> event) {
+    boolean handle(Event<E> event) {
         Handler handler = handlerMap.get(event.id);
         if (handler != null) {
             handler.handle(event.data);
+            return true;
         }
+        return false;
     }
 
     interface Notify<T> {
