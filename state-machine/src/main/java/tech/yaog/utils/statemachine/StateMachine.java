@@ -11,6 +11,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by ygl_h on 2017/7/17.
  */
 public class StateMachine<T,E> implements State.Notify<T> {
+    private static final String TAG = StateMachine.class.getName();
+
+    private Logger logger;
     /**
      * 状态列表
      */
@@ -26,6 +29,7 @@ public class StateMachine<T,E> implements State.Notify<T> {
 
     public StateMachine() {
         this.states = new CopyOnWriteArrayList<>();
+        this.logger = new LogcatLogger();
     }
 
     /**
@@ -55,12 +59,14 @@ public class StateMachine<T,E> implements State.Notify<T> {
      * @return 是否处理了此事件
      */
     public boolean event(Event<E> event) {
+        logger.i(TAG, currentState.id + "状态下触发事件："+event.id);
         return currentState.handle(event);
     }
 
     @Override
     public void nextState(T nextState) {
         if (currentState != null) {
+            logger.i(TAG, "状态变化，离开："+currentState.id);
             currentState.exit();
         }
         for (State<T,E> state : states) {
@@ -70,7 +76,12 @@ public class StateMachine<T,E> implements State.Notify<T> {
             }
         }
         if (currentState != null) {
+            logger.i(TAG, "状态变化，进入："+currentState.id);
             currentState.entry();
         }
+    }
+
+    public void setLogger(Logger logger) {
+        this.logger = logger;
     }
 }
