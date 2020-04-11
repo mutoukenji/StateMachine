@@ -92,7 +92,7 @@ public class State<T,E> {
                 if (handler != null) {
                     handler.handle(data);
                 }
-                notify.nextState(nextState);
+                notify.nextState(nextState, data);
             }
         });
         return this;
@@ -118,9 +118,9 @@ public class State<T,E> {
         return this;
     }
 
-    void entry() {
+    void entry(Object... data) {
         if (onEntry != null) {
-            onEntry.handle(new ArrayList<>());
+            onEntry.handle(data);
         }
     }
 
@@ -140,7 +140,7 @@ public class State<T,E> {
     }
 
     interface Notify<T> {
-        void nextState(T nextState);
+        void nextState(T nextState, Object... data);
     }
 
     /**

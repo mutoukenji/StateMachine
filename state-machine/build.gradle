@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/mutoukenji/StateMachine'
     gitUrl = 'https://github.com/mutoukenji/StateMachine.git'
 
-    libraryVersion = '1.0.2'
+    libraryVersion = '1.0.3'
 
     developerId = 'mutoukenji'
     developerName = 'MutouKenji'
@@ -25,12 +25,11 @@ ext {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 9
-        targetSdkVersion 25
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
@@ -46,8 +45,8 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation 'junit:junit:4.12'
 }
 
 tasks.withType(JavaCompile) {

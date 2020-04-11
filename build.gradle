@@ -2,10 +2,14 @@
 
 buildscript {
     repositories {
-        jcenter()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
+//        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.6.2'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
 
@@ -16,7 +20,8 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
+        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+//        jcenter()
     }
 }
 

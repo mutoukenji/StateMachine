@@ -63,8 +63,18 @@ public class StateMachine<T,E> implements State.Notify<T> {
         return currentState.handle(event);
     }
 
+    /**
+     * 输入事件
+     * @param eventId 事件 ID
+     * @param data 数据
+     * @return 是否处理了此事件
+     */
+    public boolean event(E eventId, Object... data) {
+        return event(new Event<E>(eventId, data));
+    }
+
     @Override
-    public void nextState(T nextState) {
+    public void nextState(T nextState, Object... data) {
         if (currentState != null) {
             logger.i(TAG, "状态变化，离开："+currentState.id);
             currentState.exit();
@@ -77,7 +87,7 @@ public class StateMachine<T,E> implements State.Notify<T> {
         }
         if (currentState != null) {
             logger.i(TAG, "状态变化，进入："+currentState.id);
-            currentState.entry();
+            currentState.entry(data);
         }
     }
 
