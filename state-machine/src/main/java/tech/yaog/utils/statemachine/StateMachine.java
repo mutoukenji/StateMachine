@@ -2,7 +2,12 @@ package tech.yaog.utils.statemachine;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 状态机
@@ -26,6 +31,11 @@ public class StateMachine<T,E> implements State.Notify<T> {
      * 当前状态
      */
     protected State<T,E> currentState;
+
+    /**
+     * 工作线程
+     */
+    protected ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public StateMachine() {
         this.states = new CopyOnWriteArrayList<>();
@@ -58,9 +68,21 @@ public class StateMachine<T,E> implements State.Notify<T> {
      * @param event 事件
      * @return 是否处理了此事件
      */
-    public boolean event(Event<E> event) {
+    public boolean event(final Event<E> event) {
         logger.i(TAG, currentState.id + "状态下触发事件："+event.id);
-        return currentState.handle(event);
+        try {
+            return executor.submit(new Callable<Boolean>() {
+                @Override
+                public Boolean call() {
+                    return currentState.handle(event);
+                }
+            }).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**
