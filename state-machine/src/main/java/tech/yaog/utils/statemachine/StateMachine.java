@@ -70,19 +70,21 @@ public class StateMachine<T,E> implements State.Notify<T> {
      */
     public boolean event(final Event<E> event) {
         logger.i(TAG, currentState.id + "状态下触发事件："+event.id);
-        try {
-            return executor.submit(new Callable<Boolean>() {
-                @Override
-                public Boolean call() {
-                    return currentState.handle(event);
-                }
-            }).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return false;
+        return currentState.handle(event);
+    }
+
+    /**
+     * 异步输入事件
+     * @param event 事件
+     */
+    public void eventAsync(final Event<E> event) {
+        logger.i(TAG, currentState.id + "状态下异步触发事件："+event.id);
+        executor.submit(new Callable<Boolean>() {
+            @Override
+            public Boolean call() {
+                return currentState.handle(event);
+            }
+        });
     }
 
     /**
@@ -93,6 +95,15 @@ public class StateMachine<T,E> implements State.Notify<T> {
      */
     public boolean event(E eventId, Object... data) {
         return event(new Event<E>(eventId, data));
+    }
+
+    /**
+     * 异步输入事件
+     * @param eventId 事件 ID
+     * @param data 数据
+     */
+    public void eventAsync(E eventId, Object... data) {
+        eventAsync(new Event<E>(eventId, data));
     }
 
     @Override
