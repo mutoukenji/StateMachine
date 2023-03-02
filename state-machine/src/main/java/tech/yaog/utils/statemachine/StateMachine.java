@@ -16,7 +16,8 @@ import java.util.concurrent.Executors;
  * Created by ygl_h on 2017/7/17.
  */
 public class StateMachine<T,E> implements State.Notify<T> {
-    private static final String TAG = StateMachine.class.getName();
+    private static final String TAG = StateMachine.class.getSimpleName();
+    private String tag = TAG;
 
     private Logger logger;
     /**
@@ -69,7 +70,7 @@ public class StateMachine<T,E> implements State.Notify<T> {
      * @return 是否处理了此事件
      */
     public boolean event(final Event<E> event) {
-        logger.i(TAG, currentState.id + "状态下触发事件："+event.id);
+        logger.i(tag, currentState.id + "状态下触发事件："+event.id);
         return currentState.handle(event);
     }
 
@@ -78,7 +79,7 @@ public class StateMachine<T,E> implements State.Notify<T> {
      * @param event 事件
      */
     public void eventAsync(final Event<E> event) {
-        logger.i(TAG, currentState.id + "状态下异步触发事件："+event.id);
+        logger.i(tag, currentState.id + "状态下异步触发事件："+event.id);
         executor.submit(new Callable<Boolean>() {
             @Override
             public Boolean call() {
@@ -109,7 +110,7 @@ public class StateMachine<T,E> implements State.Notify<T> {
     @Override
     public void nextState(T nextState, Object... data) {
         if (currentState != null) {
-            logger.i(TAG, "状态变化，离开："+currentState.id);
+            logger.i(tag, "状态变化，离开："+currentState.id);
             currentState.exit();
         }
         for (State<T,E> state : states) {
@@ -119,12 +120,16 @@ public class StateMachine<T,E> implements State.Notify<T> {
             }
         }
         if (currentState != null) {
-            logger.i(TAG, "状态变化，进入："+currentState.id);
+            logger.i(tag, "状态变化，进入："+currentState.id);
             currentState.entry(data);
         }
     }
 
     public void setLogger(Logger logger) {
         this.logger = logger;
+    }
+
+    public void setName(String name) {
+        this.tag = name;
     }
 }
